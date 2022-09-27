@@ -7,9 +7,11 @@ import {
   getProduct,
   aliasTopTrending,
   aliasTopHop,
+  updateProduct,
+  deleteProduct,
 } from '../Controller/productController.js';
 
-import { protect } from '../Controller/authController.js';
+import { protect, restrictTo } from '../Controller/authController.js';
 
 const router = express.Router();
 
@@ -22,6 +24,10 @@ router.route('/top-trending').get(aliasTopTrending, getAllProducts);
 //route
 router.route('/').get(protect, getAllProducts).post(createProduct);
 
-router.route('/:id').get(getProduct);
+router
+  .route('/:id')
+  .get(getProduct)
+  .patch(updateProduct)
+  .delete(protect, restrictTo('user'), deleteProduct);
 
 export default router;
