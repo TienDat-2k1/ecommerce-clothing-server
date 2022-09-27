@@ -1,11 +1,12 @@
 import express from 'express';
-import { signup } from '../Controller/authController.js';
+import { login, signup } from '../Controller/authController.js';
 
 const userRoute = express.Router();
 
 // alias route
 
 userRoute.post('/signup', signup);
+userRoute.post('/login', login);
 
 // routes
 // userRoute.route('/').get(getAllUsers).post(createUser);

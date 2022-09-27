@@ -1,6 +1,8 @@
 import {
   handleCastErrorDB,
   handleDuplicateFieldDB,
+  handleJWTError,
+  handleJWTExpiredError,
   handleValidationErrorDB,
   sendErrorDev,
   sendErrorProd,
@@ -19,6 +21,8 @@ const globalErrorHandler = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldDB(error);
     if (error.name === 'ValidationError')
       error = handleValidationErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
     sendErrorProd(error, res);
   }

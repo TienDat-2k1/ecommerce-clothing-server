@@ -9,6 +9,8 @@ import {
   aliasTopHop,
 } from '../Controller/productController.js';
 
+import { protect } from '../Controller/authController.js';
+
 const router = express.Router();
 
 // alias route
@@ -18,7 +20,7 @@ router.route('/top-arrival').get(aliasNewArrival, getAllProducts);
 router.route('/top-trending').get(aliasTopTrending, getAllProducts);
 
 //route
-router.route('/').get(getAllProducts).post(createProduct);
+router.route('/').get(protect, getAllProducts).post(createProduct);
 
 router.route('/:id').get(getProduct);
 
