@@ -1,5 +1,10 @@
 import express from 'express';
-import { login, signup } from '../Controller/authController.js';
+import {
+  forgotPassword,
+  login,
+  resetPassword,
+  signup,
+} from '../Controller/authController.js';
 
 const userRoute = express.Router();
 
@@ -7,6 +12,9 @@ const userRoute = express.Router();
 
 userRoute.post('/signup', signup);
 userRoute.post('/login', login);
+
+userRoute.post('/forgotPassword', forgotPassword);
+userRoute.post('/resetPassword/:token', resetPassword);
 
 // routes
 // userRoute.route('/').get(getAllUsers).post(createUser);

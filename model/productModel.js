@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema({
     type: [String],
     required: [true, 'A product must have a material!'],
   },
-  size: {
+  sizes: {
     type: [String],
     required: [true, 'A product must have a size!'],
   },
@@ -49,6 +49,7 @@ const productSchema = new mongoose.Schema({
     required: [true, 'A product must have a description'],
     trim: true,
   },
+  sold: Number,
 });
 
 const Product = mongoose.model('Products', productSchema);
