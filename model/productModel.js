@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   numberReview: { type: Number, default: 0 },
-  categoryId: {
+  category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'categories',
   },
@@ -55,6 +55,6 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-const Product = mongoose.model('Products', productSchema);
+const Product = mongoose.model('products', productSchema);
 
 export default Product;

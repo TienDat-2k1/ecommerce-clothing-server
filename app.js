@@ -1,7 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import productRouter from './routes/productRoutes.js';
 import * as dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
@@ -9,10 +8,12 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 
-import collectionRoute from './routes/categoryRoutes.js';
 import AppError from './utils/appError.js';
 import globalErrorHandler from './Controller/errorController.js';
-import userRoute from './routes/userRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
+import productRouter from './routes/productRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import reviewRouter from './routes/reviewRoutes.js';
 
 dotenv.config({ path: './config.env' });
 const app = express();
@@ -66,8 +67,9 @@ app.use((req, res, next) => {
 
 // Route
 app.use('/api/products', productRouter);
-app.use('/api/collections', collectionRoute);
-app.use('/api/user', userRoute);
+app.use('/api/collections', categoryRouter);
+app.use('/api/user', userRouter);
+app.use('/api/reviews', reviewRouter);
 
 app.get('*', (req, res, next) => {
   next(new AppError(`Can't not find ${req.originalUrl} on this server`, 404));
