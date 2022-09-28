@@ -1,6 +1,6 @@
-import User from '../model/userModel';
-import AppError from '../utils/appError';
-import catchAsync from '../utils/catchAsync';
+import User from '../model/userModel.js';
+import AppError from '../utils/appError.js';
+import catchAsync from '../utils/catchAsync.js';
 import * as userService from '../services/userService.js';
 
 export const getAllUsers = catchAsync(async (req, res, next) => {
