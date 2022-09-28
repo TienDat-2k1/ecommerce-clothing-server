@@ -1,24 +1,24 @@
-import Collection from '../model/collectionModel.js';
+import Category from '../model/categoryModel.js';
 import catchAsync from '../utils/catchAsync.js';
 
 export const getAllCollection = catchAsync(async (req, res, next) => {
-  const collections = await Collection.find();
+  const categories = await Category.find();
 
   res.status(200).json({
     status: 'success',
-    results: collections.length,
+    results: categories.length,
     data: {
-      collections,
+      categories,
     },
   });
 });
 
 export const createCollection = catchAsync(async (req, res, next) => {
-  const newCollection = await Collection.create(req.body);
+  const newCategory = await Category.create(req.body);
   res.status(201).json({
     status: 'success',
     data: {
-      collection: newCollection,
+      category: newCategory,
     },
   });
 });

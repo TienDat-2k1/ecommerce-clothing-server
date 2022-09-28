@@ -31,9 +31,9 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   numberReview: { type: Number, default: 0 },
-  collectionId: {
+  categoryId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Collections',
+    ref: 'categories',
   },
   saleOff: {
     type: Number,
@@ -49,7 +49,10 @@ const productSchema = new mongoose.Schema({
     required: [true, 'A product must have a description'],
     trim: true,
   },
-  sold: Number,
+  sold: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Product = mongoose.model('Products', productSchema);
