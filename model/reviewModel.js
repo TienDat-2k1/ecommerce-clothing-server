@@ -75,7 +75,6 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
 };
 
 reviewSchema.post('save', function () {
-  console.log(this.constructor);
   this.constructor.calcAverageRatings(this.product);
 });
 

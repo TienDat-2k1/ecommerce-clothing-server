@@ -3,7 +3,7 @@ import express from 'express';
 import * as orderController from '../Controller/orderController.js';
 import * as authController from '../Controller/authController.js';
 
-const orderRouter = express.Router();
+const orderRouter = express.Router({ mergeParams: true });
 
 orderRouter.use(authController.protect);
 
