@@ -13,7 +13,7 @@ reviewRouter
   .get(reviewController.getAllReview)
   .post(
     authController.protect,
-    authController.restrictTo('user'),
+    authController.restrictTo('user', 'admin'),
     reviewController.setProductReviewIds,
     reviewController.createReview
   );

@@ -26,11 +26,17 @@ const productSchema = new mongoose.Schema({
     type: [String],
     required: [true, 'A product must have a size!'],
   },
-  rating: {
+  ratingsAverage: {
+    type: Number,
+    default: 4.5,
+    min: [1, 'Rating must be above 1.0'],
+    max: [5, 'Rating must be below 1.0'],
+    set: val => Math.round(val * 10) / 10,
+  },
+  ratingsQuantity: {
     type: Number,
     default: 0,
   },
-  numberReview: { type: Number, default: 0 },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'categories',
@@ -53,6 +59,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+});
+
+productSchema.index({ price: 1, ratingsAverage: -1, saleOff: -1, sold: -1 });
+
+productSchema.virtual('reviews', {
+  ref: 'review',
+  foreignField: 'product',
+  localField: '_id',
 });
 
 const Product = mongoose.model('product', productSchema);
