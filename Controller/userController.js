@@ -2,6 +2,7 @@ import User from '../model/userModel.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 import * as userService from '../services/userService.js';
+import * as factory from './handlerFactory.js';
 
 export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
@@ -14,6 +15,12 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+export const getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+
+  next();
+};
 
 export const updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POST password data
@@ -50,3 +57,16 @@ export const deleteMe = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+export const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
+  });
+};
+
+export const getUser = factory.getOne(User);
+
+// DO NOT update passwords with this!
+export const updateUser = factory.updateOne(User);
+export const deleteUser = factory.deleteOne(User);

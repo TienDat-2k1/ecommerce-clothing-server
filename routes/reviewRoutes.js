@@ -2,7 +2,11 @@ import express from 'express';
 import * as reviewController from '../Controller/reviewController.js';
 import * as authController from '../Controller/authController.js';
 
-const reviewRouter = express.Router();
+const reviewRouter = express.Router({ mergeParams: true });
+
+// mergeParams:
+// POST /products/id/reviews
+// POST /reviews
 
 reviewRouter
   .route('/')
@@ -10,7 +14,14 @@ reviewRouter
   .post(
     authController.protect,
     authController.restrictTo('user'),
+    reviewController.setProductReviewIds,
     reviewController.createReview
   );
+
+reviewRouter
+  .route('/:id')
+  .get(reviewController.getReview)
+  .patch(authController.protect, reviewController.updateReview)
+  .delete(authController.protect, reviewController.deleteReview);
 
 export default reviewRouter;

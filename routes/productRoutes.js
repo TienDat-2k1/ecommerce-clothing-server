@@ -1,33 +1,57 @@
 import express from 'express';
-import {
-  aliasTopSale,
-  aliasNewArrival,
-  createProduct,
-  getAllProducts,
-  getProduct,
-  aliasTopTrending,
-  aliasTopHop,
-  updateProduct,
-  deleteProduct,
-} from '../Controller/productController.js';
-
-import { protect, restrictTo } from '../Controller/authController.js';
+import * as productController from '../Controller/productController.js';
+import * as authController from '../Controller/authController.js';
+import * as reviewController from '../Controller/reviewController.js';
+import reviewRouter from './reviewRoutes.js';
 
 const router = express.Router();
 
+//router
+//   .route('/:productId/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview
+//   );
+
+router.use('/:productId/reviews', reviewRouter);
+
 // alias route
-router.route('/top-hot').get(aliasTopHop, getAllProducts);
-router.route('/top-sale').get(aliasTopSale, getAllProducts);
-router.route('/top-arrival').get(aliasNewArrival, getAllProducts);
-router.route('/top-trending').get(aliasTopTrending, getAllProducts);
+router
+  .route('/top-hot')
+  .get(productController.aliasTopHop, productController.getAllProducts);
+router
+  .route('/top-sale')
+  .get(productController.aliasTopSale, productController.getAllProducts);
+router
+  .route('/top-arrival')
+  .get(productController.aliasNewArrival, productController.getAllProducts);
+router
+  .route('/top-trending')
+  .get(productController.aliasTopTrending, productController.getAllProducts);
 
 //route
-router.route('/').get(protect, getAllProducts).post(createProduct);
+router
+  .route('/')
+  .get(productController.getAllProducts)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productController.createProduct
+  );
 
 router
   .route('/:id')
-  .get(getProduct)
-  .patch(updateProduct)
-  .delete(protect, restrictTo('user'), deleteProduct);
+  .get(productController.getProduct)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productController.updateProduct
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('user'),
+    productController.deleteProduct
+  );
 
 export default router;

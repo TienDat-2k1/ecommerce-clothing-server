@@ -4,26 +4,29 @@ import * as userController from '../Controller/userController.js';
 
 const userRoute = express.Router();
 
-// alias route
-
 userRoute.post('/signup', authController.signup);
 userRoute.post('/login', authController.login);
-
 userRoute.post('/forgotPassword', authController.forgotPassword);
 userRoute.patch('/resetPassword/:token', authController.resetPassword);
 
-userRoute.patch(
-  '/updatePassword',
-  authController.protect,
-  authController.updatePassword
-);
+// protect all routes after this
+userRoute.use(authController.protect);
 
-userRoute.patch('/updateMe', authController.protect, userController.updateMe);
-userRoute.patch('/deleteMe', authController.protect, userController.deleteMe);
+userRoute.patch('/updatePassword', authController.updatePassword);
 
-// routes
-// userRoute.route('/').get(getAllUsers).post(createUser);
+userRoute.get('/me', userController.getMe, userController.getUser);
 
-// userRoute.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+userRoute.patch('/updateMe', userController.updateMe);
+userRoute.patch('/deleteMe', userController.deleteMe);
+
+// protect all route permission admin after this
+userRoute.use(authController.restrictTo('admin'));
+
+// don't use middleware => do not update password
+userRoute
+  .route('/:id')
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 export default userRoute;

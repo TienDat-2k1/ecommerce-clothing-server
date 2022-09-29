@@ -2,6 +2,7 @@ import Product from '../model/productModel.js';
 import APIFeatures from '../utils/apiFeatures.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
+import * as factory from './handlerFactory.js';
 
 export const aliasTopHop = catchAsync(async (req, res, next) => {
   req.query.limit = '8';
@@ -31,68 +32,10 @@ export const aliasTopTrending = catchAsync((req, res, next) => {
   next();
 });
 
-export const getAllProducts = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Product.find(), req.query)
-    .filter()
-    .sort()
-    .paginate();
+export const getAllProducts = factory.getAll(Product);
 
-  const products = await features.query;
+export const getProduct = factory.getOne(Product);
 
-  res.status(200).json({
-    status: 'success',
-    results: products.length,
-    data: {
-      products,
-    },
-  });
-});
-export const createProduct = catchAsync(async (req, res, next) => {
-  const newProduct = await Product.create(req.body);
-  res.status(201).json({
-    status: 'success',
-    data: {
-      product: newProduct,
-    },
-  });
-});
-
-export const getProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
-
-  if (!product) return next(new AppError('No product found with that ID', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      product,
-    },
-  });
-});
-
-export const updateProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!product) return next(new AppError('No product found with that ID', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      product,
-    },
-  });
-});
-
-export const deleteProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findByIdAndDelete(req.params.id);
-
-  if (!product) return new AppError('No product found with that ID', 404);
-
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
-});
+export const createProduct = factory.createOne(Product);
+export const updateProduct = factory.updateOne(Product);
+export const deleteProduct = factory.deleteOne(Product);
