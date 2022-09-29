@@ -14,6 +14,7 @@ import categoryRouter from './routes/categoryRoutes.js';
 import productRouter from './routes/productRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
 
 dotenv.config({ path: './config.env' });
 const app = express();
@@ -70,6 +71,7 @@ app.use('/api/products', productRouter);
 app.use('/api/collections', categoryRouter);
 app.use('/api/user', userRouter);
 app.use('/api/reviews', reviewRouter);
+app.use('/api/orders', orderRouter);
 
 app.get('*', (req, res, next) => {
   next(new AppError(`Can't not find ${req.originalUrl} on this server`, 404));
