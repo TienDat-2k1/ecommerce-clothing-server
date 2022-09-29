@@ -2,7 +2,6 @@ import express from 'express';
 import * as productController from '../Controller/productController.js';
 import * as authController from '../Controller/authController.js';
 import reviewRouter from './reviewRoutes.js';
-import orderRouter from './orderRoutes.js';
 
 const router = express.Router();
 
@@ -15,7 +14,6 @@ const router = express.Router();
 //   );
 
 router.use('/:productId/reviews', reviewRouter);
-router.use(':/productId/order', orderRouter);
 
 // alias route
 router

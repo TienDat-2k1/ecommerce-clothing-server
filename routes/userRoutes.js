@@ -1,8 +1,11 @@
 import express, { Router } from 'express';
 import * as authController from '../Controller/authController.js';
 import * as userController from '../Controller/userController.js';
+import orderRouter from './orderRoutes.js';
 
 const userRoute = express.Router();
+
+userRoute.use('/:id/orders', orderRouter);
 
 userRoute.post('/signup', authController.signup);
 userRoute.post('/login', authController.login);
