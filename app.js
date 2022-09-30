@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import AppError from './utils/appError.js';
 import globalErrorHandler from './Controller/errorController.js';
@@ -21,7 +23,7 @@ const app = express();
 
 // GLOBAL MIDDLEWARE
 // Security HTTP headers
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -57,7 +59,10 @@ app.use(
 );
 
 // Serving static file
-app.use(express.static('public'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(' /images', express.static('public/img/products'));
 
 // Test middleware
 app.use((req, res, next) => {
@@ -68,7 +73,7 @@ app.use((req, res, next) => {
 
 // Route
 app.use('/api/products', productRouter);
-app.use('/api/collections', categoryRouter);
+app.use('/api/categories', categoryRouter);
 app.use('/api/user', userRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/orders', orderRouter);
