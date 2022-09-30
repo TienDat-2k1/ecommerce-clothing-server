@@ -5,14 +5,6 @@ import reviewRouter from './reviewRoutes.js';
 
 const router = express.Router();
 
-//router
-//   .route('/:productId/reviews')
-//   .post(
-//     authController.protect,
-//     authController.restrictTo('user'),
-//     reviewController.createReview
-//   );
-
 router.use('/:productId/reviews', reviewRouter);
 
 // alias route

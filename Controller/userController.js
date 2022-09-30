@@ -65,7 +65,7 @@ export const createUser = (req, res) => {
   });
 };
 
-export const getUser = factory.getOne(User);
+export const getUser = factory.getOne(User, { path: 'orders' });
 
 // DO NOT update passwords with this!
 export const updateUser = factory.updateOne(User);

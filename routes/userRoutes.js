@@ -5,8 +5,6 @@ import orderRouter from './orderRoutes.js';
 
 const userRoute = express.Router();
 
-userRoute.use('/:id/orders', orderRouter);
-
 userRoute.post('/signup', authController.signup);
 userRoute.post('/login', authController.login);
 userRoute.post('/forgotPassword', authController.forgotPassword);

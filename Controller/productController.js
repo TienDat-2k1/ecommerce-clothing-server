@@ -32,7 +32,7 @@ export const aliasTopTrending = catchAsync((req, res, next) => {
 
 export const getAllProducts = factory.getAll(Product);
 
-export const getProduct = factory.getOne(Product);
+export const getProduct = factory.getOne(Product, { path: 'reviews' });
 
 export const createProduct = factory.createOne(Product);
 export const updateProduct = factory.updateOne(Product);
