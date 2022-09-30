@@ -37,11 +37,13 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
+    productController.uploadProductImages,
+    productController.resizeProductImages,
     productController.updateProduct
   )
   .delete(
     authController.protect,
-    authController.restrictTo('user'),
+    authController.restrictTo('admin'),
     productController.deleteProduct
   );
 
