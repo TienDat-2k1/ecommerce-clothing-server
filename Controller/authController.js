@@ -9,7 +9,7 @@ import * as authService from '../services/authService.js';
 export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
 
-  authService.createSendToken(newUser, 201, res);
+  await authService.createSendToken(newUser, 201, res);
 });
 
 export const login = catchAsync(async (req, res, next) => {
@@ -31,7 +31,36 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
   // If everything ok, send token to client
-  authService.createSendToken(user, 200, res);
+  await authService.createSendToken(user, 200, res);
+});
+
+export const refresh = catchAsync(async (req, res) => {
+  const cookies = req.cookies;
+  console.log(req);
+  if (!cookies?.jwt) return res.sendStatus(401);
+  console.log(cookies.jwt);
+
+  const refreshToken = cookies.jwt;
+
+  // 2) Verification token
+
+  const decoded = await jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET
+  );
+  console.log(decoded);
+
+  // 3) Check if user still exists
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser)
+    return next(
+      new AppError('The user belonging to this token does no longer exist.')
+    );
+
+  // access
+
+  await authService.createSendToken(currentUser, 200, res);
+  // req.user = currentUser;
 });
 
 export const logout = (req, res) => {
@@ -45,25 +74,16 @@ export const logout = (req, res) => {
 
 // function protect route handler
 export const protect = catchAsync(async (req, res, next) => {
-  let token;
-  // 1) Getting token and check of it's there
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.sendStatus(401);
 
-  if (!token)
-    return next(
-      new AppError('Your are not logged in! Please log in to get access', 401)
-    );
+  console.log(authHeader);
+
+  const token = authHeader.split(' ')[1];
 
   // 2) Verification token
 
-  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   console.log(decoded);
 
   // 3) Check if user still exists

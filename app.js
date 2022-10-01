@@ -9,6 +9,7 @@ import xss from 'xss-clean';
 import hpp from 'hpp';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 
 import AppError from './utils/appError.js';
 import globalErrorHandler from './Controller/errorController.js';
@@ -44,6 +45,9 @@ app.use(
     limit: '10kb',
   })
 );
+
+// cookies
+app.use(cookieParser());
 
 // Data sanitization against NOSQL query injection
 app.use(mongoSanitize());
