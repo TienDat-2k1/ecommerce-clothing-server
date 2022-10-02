@@ -11,6 +11,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 
+import corsOptions from './config/corsOptions.js';
 import AppError from './utils/appError.js';
 import globalErrorHandler from './Controller/errorController.js';
 import categoryRouter from './routes/categoryRoutes.js';
@@ -18,6 +19,7 @@ import productRouter from './routes/productRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
+import credentials from './config/credentials.js';
 
 dotenv.config({ path: './config.env' });
 const app = express();
@@ -38,8 +40,12 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Handle options credentials check - before Cors
+// and fetch cookies credentials requirement
+app.use(credentials);
+
 // Body parser, reading data from body into req.body
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(
   express.json({
     limit: '10kb',

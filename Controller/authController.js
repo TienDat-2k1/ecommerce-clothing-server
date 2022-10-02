@@ -13,6 +13,8 @@ export const signup = catchAsync(async (req, res, next) => {
 });
 
 export const login = catchAsync(async (req, res, next) => {
+  console.log(req.body);
+
   const { email, password } = req.body;
 
   // 1) Check ì email and password exits
@@ -34,13 +36,14 @@ export const login = catchAsync(async (req, res, next) => {
   await authService.createSendToken(user, 200, res);
 });
 
-export const refresh = catchAsync(async (req, res) => {
+export const refresh = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
-  console.log(req);
-  if (!cookies?.jwt) return res.sendStatus(401);
-  console.log(cookies.jwt);
-
+  if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
+
+  // 3) Check if user still exists
+  const currentUser = await User.findOne({ refreshToken });
+  if (!currentUser) return next(new AppError('Not found user', 404));
 
   // 2) Verification token
 
@@ -50,27 +53,37 @@ export const refresh = catchAsync(async (req, res) => {
   );
   console.log(decoded);
 
-  // 3) Check if user still exists
-  const currentUser = await User.findById(decoded.id);
-  if (!currentUser)
-    return next(
-      new AppError('The user belonging to this token does no longer exist.')
-    );
-
   // access
-
   await authService.createSendToken(currentUser, 200, res);
-  // req.user = currentUser;
 });
 
-export const logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
+export const logout = catchAsync(async (req, res) => {
+  // res.cookie('jwt', 'loggedout', {
+  //   expires: new Date(Date.now() + 10 * 1000),
+  //   httpOnly: true,
+  // });
 
-  req.status(200).json({ status: 'success' });
-};
+  const cookies = req.cookies;
+  if (!cookies?.jwt) return res.sendStatus(204); //No content
+  const refreshToken = cookies.jwt;
+
+  // Check refreshToken in database
+  const currentUser = await User.findOne({ refreshToken });
+  if (!currentUser) {
+    res.clearCookie('jwt', { httpOnly: true });
+    return next(new AppError('Not loggin yet!!', 204));
+  }
+
+  // delete refreshToken in db
+  currentUser.refreshToken = '';
+  await currentUser.save({ validateBeforeSave: false });
+
+  // clear Cookies
+  res.clearCookie('jwt', { httpOnly: true });
+
+  // send status
+  res.status(200).json({ status: 'success' });
+});
 
 // function protect route handler
 export const protect = catchAsync(async (req, res, next) => {

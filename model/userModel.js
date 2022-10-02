@@ -41,7 +41,10 @@ const userSchema = new mongoose.Schema(
         message: 'Passwords are not the same!',
       },
     },
-    refreshToken: String,
+    refreshToken: {
+      type: String,
+      select: false,
+    },
     passwordChangeAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -56,6 +59,8 @@ const userSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+userSchema.index({ refreshToken: 1 });
 
 userSchema.virtual('orders', {
   ref: 'order',
