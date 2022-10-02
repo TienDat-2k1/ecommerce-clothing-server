@@ -35,6 +35,7 @@ export const createSendToken = async (user, statusCode, res) => {
     ),
     httpOnly: true,
     sameSite: 'None',
+    secure: true,
   };
 
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;

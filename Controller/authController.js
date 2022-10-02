@@ -38,6 +38,8 @@ export const login = catchAsync(async (req, res, next) => {
 
 export const refresh = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
+
+  console.log(cookies);
   if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
 
