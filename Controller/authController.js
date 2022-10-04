@@ -13,8 +13,6 @@ export const signup = catchAsync(async (req, res, next) => {
 });
 
 export const login = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-
   const { email, password } = req.body;
 
   // 1) Check ì email and password exits
@@ -38,8 +36,8 @@ export const login = catchAsync(async (req, res, next) => {
 
 export const refresh = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
+  console.log(req.cookies);
 
-  console.log(cookies);
   if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
 
@@ -91,8 +89,6 @@ export const logout = catchAsync(async (req, res) => {
 export const protect = catchAsync(async (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader) return res.sendStatus(401);
-
-  console.log(authHeader);
 
   const token = authHeader.split(' ')[1];
 

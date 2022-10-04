@@ -66,6 +66,14 @@ export const getAll = Model =>
     let filter = {};
     if (req.params.productId) filter = { product: req.params.productId };
 
+    let totalPages = 1;
+    const limit = req.query.limit;
+
+    if (limit) {
+      const totalDoc = await Model.find();
+      totalPages = Math.ceil(totalDoc.length / limit);
+    }
+
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
@@ -77,6 +85,7 @@ export const getAll = Model =>
     res.status(200).json({
       status: 'success',
       results: doc.length,
+      totalPages,
       data: {
         data: doc,
       },
