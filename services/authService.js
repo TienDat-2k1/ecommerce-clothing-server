@@ -21,7 +21,7 @@ export const createSendToken = async (user, statusCode, res) => {
   const accessToken = signToken(
     user._id,
     process.env.ACCESS_TOKEN_SECRET,
-    '5p'
+    '5m'
   );
   const refreshToken = signToken(
     user._id,
