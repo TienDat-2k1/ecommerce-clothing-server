@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema(
     sizes: {
       type: [String],
       validate: {
-        validator: s => Array.isArray(s) && v.length > 0,
+        validator: s => Array.isArray(s) && s.length > 0,
         message: 'Not an array or array empty',
       },
     },
