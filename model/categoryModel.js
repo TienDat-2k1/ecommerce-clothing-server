@@ -8,7 +8,7 @@ const categorySchema = new mongoose.Schema({
   },
   imageCover: {
     type: String,
-    require: [true, 'A category must have a image cover'],
+    required: [true, 'A category must have a image cover'],
   },
   createAt: {
     type: Date,

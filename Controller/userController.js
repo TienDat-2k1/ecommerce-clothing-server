@@ -26,6 +26,8 @@ export const resizeUserPhoto = async (req, res, next) => {
 
   req.file.filename = `user-${req.user.id}--${Date.now()}.jpeg`;
 
+  req.body.photo = req.file.filename;
+
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')

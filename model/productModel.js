@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema(
       required: [true, 'A product must have a price!'],
     },
     material: {
-      type: [String],
+      type: String,
       required: [true, 'A product must have a material!'],
     },
     sizes: {
@@ -41,6 +41,7 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'categories',
+      required: [true, 'A product must have a category'],
     },
     saleOff: {
       type: Number,
