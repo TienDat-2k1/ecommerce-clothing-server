@@ -28,6 +28,9 @@ const productSchema = new mongoose.Schema(
         {
           type: String,
           required: [true, 'Please Input Size'],
+          trim: true,
+          minlength: 1,
+          uppercase: true,
         },
       ],
       required: [true, 'A product must have a size!'],
