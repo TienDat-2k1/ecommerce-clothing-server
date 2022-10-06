@@ -24,7 +24,12 @@ const productSchema = new mongoose.Schema(
       required: [true, 'A product must have a material!'],
     },
     sizes: {
-      type: [String],
+      type: [
+        {
+          type: String,
+          required: [true, 'Please Input Size'],
+        },
+      ],
       required: [true, 'A product must have a size!'],
     },
     ratingsAverage: {
