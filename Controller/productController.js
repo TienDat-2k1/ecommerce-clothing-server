@@ -71,30 +71,26 @@ export const resizeProductImages = async (req, res, next) => {
 };
 
 export const aliasTopHop = catchAsync(async (req, res, next) => {
-  req.query.limit = '8';
-  req.query.sort = '-rating';
-
+  req.query.limit = '100';
+  req.query.sort = '-ratingsAverage';
   next();
 });
 
 export const aliasTopSale = catchAsync(async (req, res, next) => {
-  req.query.limit = '8';
+  req.query.limit = '100';
   req.query.sort = '-saleOff';
-
   next();
 });
 
 export const aliasNewArrival = catchAsync(async (req, res, next) => {
-  req.query.limit = '8';
+  req.query.limit = '100';
   req.query.sort = '-createAt';
-
   next();
 });
 
-export const aliasTopTrending = catchAsync((req, res, next) => {
-  req.query.limit = '8';
-  req.query.sort = '-numberReview';
-
+export const aliasTopTrending = catchAsync(async (req, res, next) => {
+  req.query.limit = '100';
+  req.query.sort = '-ratingsQuantity';
   next();
 });
 

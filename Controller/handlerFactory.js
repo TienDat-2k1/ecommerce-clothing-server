@@ -69,17 +69,21 @@ export const getAll = Model =>
     let totalPages = 1;
     const limit = req.query.limit;
 
+    // get all doc before paginate
     if (limit) {
-      const totalDoc = await Model.find({
-        $or: [{ name: { $regex: new RegExp(req.query.keywords, 'i') } }],
-      });
+      const totalDoc = await new APIFeatures(
+        Model.find({
+          ...filter,
+          $or: [{ name: { $regex: new RegExp(req.query.keywords, 'i') } }],
+        }),
+        req.query
+      )
+        .filter()
+        .sort().query;
+
+      console.log(totalDoc.length);
       totalPages = Math.ceil(totalDoc.length / limit);
     }
-
-    // const features = new APIFeatures(Model.find(filter), req.query)
-    //   .filter()
-    //   .sort()
-    //   .paginate();
 
     // filter with search keywords match with name
     const features = new APIFeatures(
