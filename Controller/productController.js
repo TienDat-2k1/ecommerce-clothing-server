@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import Product from '../model/productModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import * as factory from './handlerFactory.js';
+import * as productServices from '../services/productServices.js';
 
 const multerStorage = multer.memoryStorage();
 
@@ -94,7 +95,12 @@ export const aliasTopTrending = catchAsync(async (req, res, next) => {
   next();
 });
 
-export const getAllProducts = factory.getAll(Product);
+// { $all: req.query.sizes.split(',') }
+
+export const getAllProducts = factory.getAll(
+  Product,
+  productServices.productFilter
+);
 
 export const getProduct = factory.getOne(Product, { path: 'reviews' });
 

@@ -4,6 +4,7 @@ import crypto from 'crypto';
 
 import Category from '../model/categoryModel.js';
 import AppError from '../utils/appError.js';
+import * as categoryService from '../services/categoryService.js';
 import * as factory from './handlerFactory.js';
 
 const multerStorage = multer.memoryStorage();
@@ -38,7 +39,10 @@ export const resizeImageCover = async (req, res, next) => {
   next();
 };
 
-export const getAllCategories = factory.getAll(Category);
+export const getAllCategories = factory.getAll(
+  Category,
+  categoryService.categoryFilter
+);
 export const getCategory = factory.getOne(Category);
 export const createCategory = factory.createOne(Category);
 export const updateCategory = factory.updateOne(Category);

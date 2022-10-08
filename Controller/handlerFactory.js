@@ -60,11 +60,14 @@ export const getOne = (Model, popOptions) =>
     });
   });
 
-export const getAll = Model =>
+export const getAll = (
+  Model,
+  filterFn = function () {
+    return {};
+  }
+) =>
   catchAsync(async (req, res, next) => {
-    // To allow for nested GET reviews on tour (hack)
-    let filter = {};
-    if (req.params.productId) filter = { product: req.params.productId };
+    const filter = filterFn(req);
 
     let totalPages = 1;
     const limit = req.query.limit;
@@ -74,14 +77,13 @@ export const getAll = Model =>
       const totalDoc = await new APIFeatures(
         Model.find({
           ...filter,
-          $or: [{ name: { $regex: new RegExp(req.query.keywords, 'i') } }],
         }),
         req.query
       )
         .filter()
-        .sort().query;
+        .sort()
+        .limitFields().query;
 
-      console.log(totalDoc.length);
       totalPages = Math.ceil(totalDoc.length / limit);
     }
 
@@ -89,12 +91,12 @@ export const getAll = Model =>
     const features = new APIFeatures(
       Model.find({
         ...filter,
-        $or: [{ name: { $regex: new RegExp(req.query.keywords, 'i') } }],
       }),
       req.query
     )
       .filter()
       .sort()
+      .limitFields()
       .paginate();
 
     // const doc = await features.query.explain();
