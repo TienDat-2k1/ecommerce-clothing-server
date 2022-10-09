@@ -75,7 +75,14 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-productSchema.index({ price: 1, ratingsAverage: -1, saleOff: -1, sold: -1 });
+productSchema.index({ createAt: -1 });
+
+productSchema.index({
+  price: 1,
+  ratingsAverage: -1,
+  saleOff: -1,
+  sold: -1,
+});
 
 productSchema.virtual('reviews', {
   ref: 'review',
