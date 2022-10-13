@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       default: 'default.jpg',
     },
     address: String,
-    phoneNumber: String,
+    phone: String,
     role: {
       type: String,
       enum: ['user', 'admin'],

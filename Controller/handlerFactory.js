@@ -44,7 +44,12 @@ export const createOne = Model =>
 
 export const getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.findById(req.params.id);
+    const feature = new APIFeatures(
+      Model.findById(req.params.id),
+      req
+    ).limitFields();
+    // let query = Model.findById(req.params.id);
+    let query = feature.query;
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
 
