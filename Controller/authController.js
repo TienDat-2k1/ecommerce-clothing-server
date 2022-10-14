@@ -23,8 +23,6 @@ export const login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password +active');
   if (!user) return next(new AppError('Invalid email or password!'));
 
-  console.log(user);
-
   // Check if account is active
   if (!user.active)
     return next(new AppError('Your account has been disabled!', 403));
