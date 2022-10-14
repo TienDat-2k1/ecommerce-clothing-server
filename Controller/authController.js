@@ -8,7 +8,6 @@ import * as authService from '../services/authService.js';
 
 export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-
   await authService.createSendToken(newUser, 201, res);
 });
 
@@ -21,8 +20,14 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
   // 2) Check if user exists && password incorrect
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password +active');
   if (!user) return next(new AppError('Invalid email or password!'));
+
+  console.log(user);
+
+  // Check if account is active
+  if (!user.active)
+    return next(new AppError('Your account has been disabled!', 403));
 
   const correctPassword = await user.correctPassword(password, user.password);
 

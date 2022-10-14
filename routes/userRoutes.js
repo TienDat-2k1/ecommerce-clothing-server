@@ -1,7 +1,6 @@
 import express, { Router } from 'express';
 import * as authController from '../Controller/authController.js';
 import * as userController from '../Controller/userController.js';
-import orderRouter from './orderRoutes.js';
 
 const userRoute = express.Router();
 
@@ -30,6 +29,8 @@ userRoute.patch('/deleteMe', userController.deleteMe);
 
 // protect all route permission admin after this
 userRoute.use(authController.restrictTo('admin'));
+
+userRoute.route('/').get(userController.getAllUsers);
 
 // don't use middleware => do not update password
 userRoute

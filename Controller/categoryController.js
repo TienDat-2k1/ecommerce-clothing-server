@@ -43,6 +43,7 @@ export const getAllCategories = factory.getAll(
   Category,
   categoryService.categoryFilter
 );
+
 export const getCategory = factory.getOne(Category);
 export const createCategory = factory.createOne(Category);
 export const updateCategory = factory.updateOne(Category);

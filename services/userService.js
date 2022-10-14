@@ -6,3 +6,15 @@ export const filterObj = (obj, ...allowFields) => {
 
   return newObj;
 };
+
+export const userFilter = req => {
+  let filter = {};
+
+  if (req.query.key)
+    filter = {
+      ...filter,
+      $or: [{ email: { $regex: new RegExp(req.query.key, 'i') } }],
+    };
+
+  return filter;
+};
