@@ -39,7 +39,7 @@ export const login = catchAsync(async (req, res, next) => {
 
 export const refresh = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
-  console.log(req.cookies);
+  // console.log(req.cookies);
 
   if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
@@ -54,7 +54,7 @@ export const refresh = catchAsync(async (req, res, next) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET
   );
-  console.log(decoded);
+  // console.log(decoded);
 
   // access
   await authService.createSendToken(currentUser, 200, res);
@@ -98,7 +98,7 @@ export const protect = catchAsync(async (req, res, next) => {
   // 2) Verification token
 
   const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  console.log(decoded);
+  // console.log(decoded);
 
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);

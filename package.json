@@ -6,8 +6,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "start:prod": "SET NODE_ENV=production&& nodemon server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "start:prod": "set NODE_ENV=production && nodemon server.js",
     "debug": "ndb server.js",
     "serve": "nodemon ./server.js"
   },
@@ -15,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",

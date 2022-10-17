@@ -10,6 +10,7 @@ import hpp from 'hpp';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 
 import corsOptions from './config/corsOptions.js';
 import AppError from './utils/appError.js';
@@ -80,6 +81,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use(compression());
 
 // Route
 app.use('/api/products', productRouter);
