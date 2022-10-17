@@ -8,7 +8,7 @@ import * as authService from '../services/authService.js';
 
 export const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  await authService.createSendToken(newUser, 201, res);
+  await authService.createSendToken(newUser, 201, req, res);
 });
 
 export const login = catchAsync(async (req, res, next) => {
@@ -34,30 +34,30 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
   // If everything ok, send token to client
-  await authService.createSendToken(user, 200, res);
+  await authService.createSendToken(user, 200, req, res);
 });
 
 export const refresh = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
-  // console.log(req.cookies);
+  console.log(cookies);
 
   if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
+
+  console.log({ refreshToken });
 
   // 3) Check if user still exists
   const currentUser = await User.findOne({ refreshToken });
   if (!currentUser) return next(new AppError('Not found user', 404));
 
-  // 2) Verification token
-
-  const decoded = await jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET
-  );
+  // const decoded = await jwt.verify(
+  //   refreshToken,
+  //   process.env.REFRESH_TOKEN_SECRET
+  // );
   // console.log(decoded);
 
   // access
-  await authService.createSendToken(currentUser, 200, res);
+  await authService.createSendToken(currentUser, 200, req, res);
 });
 
 export const logout = catchAsync(async (req, res) => {
@@ -196,7 +196,7 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user
 
   // 4) Log the user in, send JWT
-  authService.createSendToken(user, 200, res);
+  authService.createSendToken(user, 200, req, res);
 });
 
 export const updatePassword = catchAsync(async (req, res, next) => {
@@ -214,5 +214,5 @@ export const updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 4) Log user in, send JWT
-  authService.createSendToken(user, 200, res);
+  authService.createSendToken(user, 200, req, res);
 });

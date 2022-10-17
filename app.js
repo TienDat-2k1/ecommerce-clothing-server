@@ -25,6 +25,8 @@ import credentials from './config/credentials.js';
 dotenv.config({ path: './config.env' });
 const app = express();
 
+app.enable('trust proxy');
+
 // GLOBAL MIDDLEWARE
 // Security HTTP headers
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
@@ -32,6 +34,14 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.use((req, res, next) => {
+//     if (req.header('x-forwarded-proto') !== 'https')
+//       res.redirect(`https://${req.header('host')}${req.url}`);
+//     else next();
+//   });
+// }
 
 // allow 100 requests from the same IP in 1 hour
 // const limiter = rateLimit({
