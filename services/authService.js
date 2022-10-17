@@ -29,7 +29,7 @@ export const createSendToken = async (user, statusCode, req, res) => {
     process.env.JWT_EXPIRES_IN
   );
 
-  console.log(req.secure || req.headers['x-forwarded-proto'] === 'https');
+  // console.log(req.secure || req.headers['x-forwarded-proto'] === 'https');
 
   const cookieOptions = {
     expires: new Date(
