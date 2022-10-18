@@ -28,12 +28,30 @@ const app = express();
 app.enable('trust proxy');
 
 // GLOBAL MIDDLEWARE
-// Security HTTP headers
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
+app.use(credentials);
+app.use(cors(corsOptions));
+// app.use(cors());
+// app.options('*', cors());
+
+// Serving static file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Security HTTP headers
+// app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet());
+
+// development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// Handle options credentials check - before Cors
+// and fetch cookies credentials requirement
+
+// app.use(credentials);
 
 // if (process.env.NODE_ENV === 'production') {
 //   app.use((req, res, next) => {
@@ -51,18 +69,12 @@ if (process.env.NODE_ENV === 'development') {
 // });
 // app.use('/api', limiter);
 
-// Handle options credentials check - before Cors
-// and fetch cookies credentials requirement
-app.use(credentials);
-
 // Body parser, reading data from body into req.body
-app.use(cors(corsOptions));
 app.use(
   express.json({
     limit: '10kb',
   })
 );
-
 // cookies
 app.use(cookieParser());
 
@@ -78,11 +90,8 @@ app.use(
     whitelist: [],
   })
 );
+app.use(compression());
 
-// Serving static file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-app.use(express.static(path.join(__dirname, 'public')));
 // app.use(' /images', express.static('public/img/products'));
 
 // Test middleware
@@ -91,8 +100,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
-app.use(compression());
 
 // Route
 app.use('/api/products', productRouter);
