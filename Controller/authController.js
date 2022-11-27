@@ -97,8 +97,20 @@ export const protect = catchAsync(async (req, res, next) => {
 
   // 2) Verification token
 
-  const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  // console.log(decoded);
+  const decoded = jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, decoded) {
+      if (err) {
+        return err;
+      }
+      return decoded;
+    }
+  );
+
+  console.log(decoded);
+  if (decoded.name === 'TokenExpiredError')
+    return next(new AppError('Your token has expired!', 403));
 
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);

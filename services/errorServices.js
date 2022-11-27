@@ -52,5 +52,5 @@ export const handleJWTError = () => {
 };
 
 export const handleJWTExpiredError = () => {
-  return new AppError('Your token has expired!', 401);
+  return new AppError('Your token has expired!', 403);
 };
