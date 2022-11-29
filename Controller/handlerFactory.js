@@ -51,6 +51,7 @@ export const getOne = (Model, popOptions) =>
     // let query = Model.findById(req.params.id);
     let query = feature.query;
     if (popOptions) query = query.populate(popOptions);
+
     const doc = await query;
 
     if (!doc) {

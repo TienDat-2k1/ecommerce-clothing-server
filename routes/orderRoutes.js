@@ -17,4 +17,6 @@ orderRouter
   .get(orderController.getOrder)
   .patch(authController.restrictTo('admin'), orderController.updateOrder);
 
+orderRouter.route('/:id/cancel').get(orderController.canceledOrder);
+
 export default orderRouter;
