@@ -25,7 +25,7 @@ export const login = catchAsync(async (req, res, next) => {
 
   // Check if account is active
   if (!user.active)
-    return next(new AppError('Your account has been disabled!', 403));
+    return next(new AppError('Your account has been disabled!', 401));
 
   const correctPassword = await user.correctPassword(password, user.password);
 
@@ -43,8 +43,6 @@ export const refresh = catchAsync(async (req, res, next) => {
 
   if (!cookies?.jwt) return next(new AppError('Unauthorized', 401));
   const refreshToken = cookies.jwt;
-
-  console.log({ refreshToken });
 
   // 3) Check if user still exists
   const currentUser = await User.findOne({ refreshToken });
@@ -108,7 +106,6 @@ export const protect = catchAsync(async (req, res, next) => {
     }
   );
 
-  console.log(decoded);
   if (decoded.name === 'TokenExpiredError')
     return next(new AppError('Your token has expired!', 403));
 
