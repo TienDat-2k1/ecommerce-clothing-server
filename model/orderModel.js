@@ -55,14 +55,15 @@ const orderSchema = mongoose.Schema(
     },
     totalPrice: Number,
     description: String,
-    createAt: {
-      type: Date,
-      default: new Date().getTime(),
-    },
+    // createAt: {
+    //   type: Date,
+    //   default: Date.now(),
+    // },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   }
 );
 
@@ -88,5 +89,11 @@ orderSchema.pre(/^find/, function (next) {
 });
 
 const Order = mongoose.model('order', orderSchema);
+
+// const deleteData = async () => {
+//   await Order.deleteMany();
+// };
+
+// deleteData();
 
 export default Order;

@@ -33,7 +33,7 @@ class APIFeatures {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort('-createAt');
+      this.query = this.query.sort('-updatedAt');
     }
 
     return this;

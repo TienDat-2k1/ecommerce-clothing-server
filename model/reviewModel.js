@@ -12,10 +12,10 @@ const reviewSchema = new mongoose.Schema(
       min: 1,
       max: 5,
     },
-    createAt: {
-      type: Date,
-      default: new Date().getTime(),
-    },
+    // createAt: {
+    //   type: Date,
+    //   default: new Date().getTime(),
+    // },
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'product',
@@ -30,6 +30,7 @@ const reviewSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   }
 );
 

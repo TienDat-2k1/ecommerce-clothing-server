@@ -50,11 +50,11 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    createAt: {
-      type: Date,
-      default: new Date().getTime(),
-      select: false,
-    },
+    // createAt: {
+    //   type: Date,
+    //   default: new Date().getTime(),
+    //   select: false,
+    // },
     description: {
       type: String,
       required: [true, 'A product must have a description'],
@@ -72,6 +72,7 @@ const productSchema = new mongoose.Schema(
     toObject: {
       virtuals: true,
     },
+    timestamps: true,
   }
 );
 

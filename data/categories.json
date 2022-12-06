@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "638ae6580f890f67b5838e22",
+    "name": "Áo thun",
+    "imageCover": "category-8bace4268c4ed8de21d48a57224838c5--1670047320064.jpeg"
+  },
+  {
+    "_id": "638ae6bc0f890f67b5838e2c",
+    "name": "Áo khoác",
+    "imageCover": "category-137fe6107efd57ec61a6ccbc99f3f778--1670047420906.jpeg"
+  },
+  {
+    "_id": "638ae7320f890f67b5838e36",
+    "name": "Áo sơ mi",
+    "imageCover": "category-58c815dcce2fcce39288ab432b903378--1670047538599.jpeg"
+  },
+  {
+    "_id": "638ae7a80f890f67b5838e48",
+    "name": "Quần dài",
+    "imageCover": "category-a183432e25f2c88346ed8b36f6c996d3--1670047656252.jpeg"
+  },
+  {
+    "_id": "638c25e33b6df3f3b5e372c4",
+    "name": "Quần Short",
+    "imageCover": "category-6255e386367aec71de7da4be560eff29--1670129123006.jpeg"
+  }
+]

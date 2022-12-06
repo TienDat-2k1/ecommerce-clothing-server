@@ -84,7 +84,7 @@ export const aliasTopSale = catchAsync(async (req, res, next) => {
 
 export const aliasNewArrival = catchAsync(async (req, res, next) => {
   req.query.limit = '100';
-  req.query.sort = '-createAt';
+  req.query.sort = '-createdAt';
   next();
 });
 
