@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
     phone: String,
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'admin', 'shipper'],
       default: 'user',
     },
     password: {
@@ -68,6 +68,12 @@ userSchema.index({ refreshToken: 1 });
 userSchema.virtual('orders', {
   ref: 'order',
   foreignField: 'customer',
+  localField: '_id',
+});
+
+userSchema.virtual('ships', {
+  ref: 'order',
+  foreignField: 'shipper',
   localField: '_id',
 });
 

@@ -15,7 +15,10 @@ orderRouter
 orderRouter
   .route('/:id')
   .get(orderController.getOrder)
-  .patch(authController.restrictTo('admin'), orderController.updateOrder);
+  .patch(
+    authController.restrictTo('admin', 'shipper'),
+    orderController.updateOrder
+  );
 
 orderRouter.route('/:id/cancel').get(orderController.canceledOrder);
 

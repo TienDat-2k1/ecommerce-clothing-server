@@ -93,14 +93,24 @@ export const createUser = (req, res) => {
   });
 };
 
-export const getUser = factory.getOne(User, {
-  path: 'orders',
-  options: {
-    sort: {
-      createAt: -1,
+export const getUser = factory.getOne(User, [
+  {
+    path: 'orders',
+    options: {
+      sort: {
+        createAt: -1,
+      },
     },
   },
-});
+  {
+    path: 'ships',
+    options: {
+      sort: {
+        createAt: -1,
+      },
+    },
+  },
+]);
 export const getAllUsers = factory.getAll(User, userService.userFilter);
 
 // DO NOT update passwords with this!

@@ -50,7 +50,11 @@ export const getOne = (Model, popOptions) =>
     ).limitFields();
     // let query = Model.findById(req.params.id);
     let query = feature.query;
-    if (popOptions) query = query.populate(popOptions);
+    if (popOptions && popOptions.length) {
+      popOptions.map(pop => {
+        query = query.populate(pop);
+      });
+    }
 
     const doc = await query;
 

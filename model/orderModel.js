@@ -44,6 +44,10 @@ const orderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user',
     },
+    shipper: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+    },
     address: {
       type: String,
       required: [true, 'An order must have a address!'],
@@ -74,6 +78,14 @@ orderSchema.index({
 
 orderSchema.index({ phone: 1 });
 
+orderSchema.pre('save', function (next) {
+  if (this.status === 'Success') {
+    // this.sold=+1
+    // console.log(this);
+  }
+  next();
+});
+
 orderSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'items',
@@ -81,10 +93,15 @@ orderSchema.pre(/^find/, function (next) {
       path: 'product',
       select: 'name imageCover',
     },
-  }).populate({
-    path: 'customer',
-    select: 'name',
-  });
+  })
+    .populate({
+      path: 'customer',
+      select: 'name',
+    })
+    .populate({
+      path: 'shipper',
+      select: 'name',
+    });
   next();
 });
 
