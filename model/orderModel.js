@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import AppError from '../utils/appError.js';
+import Product from './productModel.js';
 
 const orderItemSchema = new mongoose.Schema({
   product: {
@@ -78,13 +80,56 @@ orderSchema.index({
 
 orderSchema.index({ phone: 1 });
 
-orderSchema.pre('save', function (next) {
-  if (this.status === 'Success') {
-    // this.sold=+1
-    // console.log(this);
+const updateProductSold = async (items = [], next) => {
+  if (!items || items?.length === 0) return;
+
+  const session = await Product.startSession();
+  session.startTransaction();
+  try {
+    await Promise.all(
+      items.map(item => {
+        return Product.findOneAndUpdate(
+          { _id: item.product._id },
+          {
+            $inc: { sold: item.quantity },
+          }
+        );
+      })
+    );
+    await session.commitTransaction();
+    session.endSession();
+    next();
+  } catch (error) {
+    session.abortTransaction();
+    session.endSession();
+    next(new AppError('fail update product sold!', 503));
   }
-  next();
+};
+
+orderSchema.pre('findOneAndUpdate', function (next) {
+  const data = this.getUpdate();
+
+  if (data.status === 'Success') {
+    this.clone()
+      .find(this._conditions)
+      .then(res => {
+        const items = res[0].items;
+
+        updateProductSold(items, next);
+      })
+      .catch(e => {
+        console.log({ e });
+        return next(new AppError('No found document!', 404));
+      });
+  } else next();
+
+  // next();
 });
+
+// orderSchema.post(/^findOneAnd/, async function (doc, next) {
+//   console.log('update?');
+//   console.log(doc);
+// });
 
 orderSchema.pre(/^find/, function (next) {
   this.populate({

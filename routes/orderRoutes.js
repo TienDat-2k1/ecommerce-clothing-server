@@ -7,6 +7,8 @@ const orderRouter = express.Router();
 
 orderRouter.use(authController.protect);
 
+orderRouter.route('/order-stat').get(orderController.orderStart);
+
 orderRouter
   .route('/')
   .get(orderController.getAllOrder)
