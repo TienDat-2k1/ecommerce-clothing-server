@@ -4,7 +4,7 @@ export const orderFilter = req => {
   if (req.query.key)
     filter = {
       ...filter,
-      $or: [{ phone: { $eq: req.query.key } }],
+      $or: [{ phone: { $regex: new RegExp(req.query.key, 'i') } }],
     };
 
   return filter;

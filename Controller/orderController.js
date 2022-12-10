@@ -45,10 +45,16 @@ export const orderStart = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      totalRevenue,
+      totalRevenue: totalRevenue[0].totalRevenue,
       totalOrder: totalOrder[0].totalOrder,
-      rateSuccess,
-      rateFailed,
+      rateSuccess: {
+        rate: rateSuccess,
+        num: totalRevenue[0].num,
+      },
+      rateFailed: {
+        rate: rateFailed,
+        num: totalOrderCancel[0].num,
+      },
     },
   });
 });
